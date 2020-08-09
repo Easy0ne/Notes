@@ -1,0 +1,1008 @@
+<!DOCTYPE html []>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="author" content="MarkdownViewer++" />
+    <title>Markdown基础语法.md</title>
+    <style type="text/css">
+            
+/* Avoid page breaks inside the most common attributes, especially for exports (i.e. PDF) */
+td, h1, h2, h3, h4, h5, p, ul, ol, li {
+    page-break-inside: avoid; 
+}
+@font-face {
+  font-family: octicons-anchor;
+  src: url(data:font/woff;charset=utf-8;base64,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) format('woff');
+}
+#cnblogs_post_body {
+  margin: 20px 0;
+}
+ 
+#cnblogs_post_body table, .cnblogs-post-body table {
+  border: none;
+}
+
+.cnblogs-markdown {
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  color: #333;
+  overflow: hidden;
+  font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  word-wrap: break-word;
+}
+ 
+.cnblogs-markdown a {
+  background: transparent;
+}
+ 
+.cnblogs-markdown a:active,
+.cnblogs-markdown a:hover {
+  outline: 0;
+}
+ 
+.cnblogs-markdown strong {
+  font-weight: bold;
+}
+ 
+.cnblogs-markdown h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+ 
+.cnblogs-markdown img {
+  border: 0;
+}
+ 
+.cnblogs-markdown hr {
+  box-sizing: content-box;
+  height: 0;
+}
+ 
+.cnblogs-markdown pre {
+  overflow: auto;
+}
+ 
+.cnblogs-markdown code,
+.cnblogs-markdown kbd,
+.cnblogs-markdown pre {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+ 
+.cnblogs-markdown input {
+  color: inherit;
+  font: inherit;
+  margin: 0;
+}
+ 
+.cnblogs-markdown html input[disabled] {
+  cursor: default;
+}
+ 
+.cnblogs-markdown input {
+  line-height: normal;
+}
+ 
+.cnblogs-markdown input[type="checkbox"] {
+  box-sizing: border-box;
+  padding: 0;
+  font-size: 16px;
+}
+ 
+.cnblogs-markdown table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+ 
+.cnblogs-markdown td,
+.cnblogs-markdown th {
+  padding: 0;
+}
+ 
+.cnblogs-markdown * {
+  box-sizing: border-box;
+  font-size: 16px;
+}
+ 
+.cnblogs-markdown input {
+  font: 13px/1.4 Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+}
+ 
+.cnblogs-markdown a {
+  color: #0681d0 !important;
+  text-decoration: none !important;
+}
+ 
+.cnblogs-markdown a:hover,
+.cnblogs-markdown a:active {
+  text-decoration: underline;
+}
+ 
+.cnblogs-markdown hr {
+  height: 0;
+  margin: 15px 0;
+  overflow: hidden;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #ddd;
+}
+ 
+.cnblogs-markdown hr:before {
+  display: table;
+  content: "";
+}
+ 
+.cnblogs-markdown hr:after {
+  display: table;
+  clear: both;
+  content: "";
+}
+ 
+.cnblogs-markdown h1,
+.cnblogs-markdown h2,
+.cnblogs-markdown h3,
+.cnblogs-markdown h4,
+.cnblogs-markdown h5,
+.cnblogs-markdown h6 {
+  margin-top: 15px;
+  margin-bottom: 10px;
+  line-height: 1.1;
+}
+ 
+.cnblogs-markdown blockquote {
+  margin: 0;
+}
+ 
+.cnblogs-markdown ul,
+.cnblogs-markdown ol {
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+ 
+.cnblogs-markdown ol ol,
+.cnblogs-markdown ul ol {
+  list-style-type: lower-roman;
+}
+ 
+.cnblogs-markdown ul ul ol,
+.cnblogs-markdown ul ol ol,
+.cnblogs-markdown ol ul ol,
+.cnblogs-markdown ol ol ol {
+  list-style-type: lower-alpha;
+}
+ 
+.cnblogs-markdown dd {
+  margin-left: 0;
+}
+ 
+.cnblogs-markdown code {
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  font-size: 12px;
+}
+ 
+.cnblogs-markdown pre {
+  margin-top: 0;
+  margin-bottom: 0;
+  font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+ 
+.cnblogs-markdown .octicon {
+  font: normal normal normal 16px/1 octicons-anchor;
+  display: inline-block;
+  text-decoration: none;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+ 
+.cnblogs-markdown .octicon-link:before {
+  content: '\f05c';
+}
+ 
+.cnblogs-markdown&gt;*:first-child {
+  margin-top: 0 !important;
+}
+ 
+.cnblogs-markdown&gt;*:last-child {
+  margin-bottom: 0 !important;
+}
+
+.cnblogs-markdown a:not(:link):not(:visited) {
+  color: inherit;
+  text-decoration: none;
+}
+ 
+.cnblogs-markdown .anchor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  padding-right: 6px;
+  padding-left: 30px;
+  margin-left: -30px;
+}
+ 
+.cnblogs-markdown .anchor:focus {
+  outline: none;
+}
+ 
+.cnblogs-markdown h1,
+.cnblogs-markdown h2,
+.cnblogs-markdown h3,
+.cnblogs-markdown h4,
+.cnblogs-markdown h5,
+.cnblogs-markdown h6 {
+  position: relative;
+  margin-top: 1em;
+  margin-bottom: 16px;
+  font-weight: bold;
+  line-height: 1.4;
+}
+ 
+.cnblogs-markdown h1 .octicon-link,
+.cnblogs-markdown h2 .octicon-link,
+.cnblogs-markdown h3 .octicon-link,
+.cnblogs-markdown h4 .octicon-link,
+.cnblogs-markdown h5 .octicon-link,
+.cnblogs-markdown h6 .octicon-link {
+  display: none;
+  color: #000;
+  vertical-align: middle;
+}
+ 
+.cnblogs-markdown h1:hover .anchor,
+.cnblogs-markdown h2:hover .anchor,
+.cnblogs-markdown h3:hover .anchor,
+.cnblogs-markdown h4:hover .anchor,
+.cnblogs-markdown h5:hover .anchor,
+.cnblogs-markdown h6:hover .anchor {
+  padding-left: 8px;
+  margin-left: -30px;
+  text-decoration: none;
+}
+ 
+.cnblogs-markdown h1:hover .anchor .octicon-link,
+.cnblogs-markdown h2:hover .anchor .octicon-link,
+.cnblogs-markdown h3:hover .anchor .octicon-link,
+.cnblogs-markdown h4:hover .anchor .octicon-link,
+.cnblogs-markdown h5:hover .anchor .octicon-link,
+.cnblogs-markdown h6:hover .anchor .octicon-link {
+  display: inline-block;
+}
+ 
+.cnblogs-markdown h1 {
+  padding-bottom: 0.3em;
+  font-size: 2.25em !important;
+  line-height: 1.2;
+  border-bottom: 1px solid #eee;
+}
+ 
+.cnblogs-markdown h1 .anchor {
+  line-height: 1;
+}
+ 
+.cnblogs-markdown h2 {
+  padding-bottom: 0.3em;
+  font-size: 1.75em !important;
+  line-height: 1.225;
+  border-bottom: 1px solid #eee;
+}
+ 
+.cnblogs-markdown h2 .anchor {
+  line-height: 1;
+}
+ 
+.cnblogs-markdown h3 {
+  font-size: 1.5em!important;
+  line-height: 1.43;
+}
+ 
+.cnblogs-markdown h3 .anchor {
+  line-height: 1.2;
+}
+ 
+.cnblogs-markdown h4 {
+  font-size: 1.25em !important; 
+}
+ 
+.cnblogs-markdown h4 .anchor {
+  line-height: 1.2;
+}
+ 
+.cnblogs-markdown h5 {
+  font-size: 1em !important;
+}
+ 
+.cnblogs-markdown h5 .anchor {
+  line-height: 1.1;
+}
+ 
+.cnblogs-markdown h6 {
+  font-size: 1em !important;
+  color: #777;
+}
+ 
+.cnblogs-markdown h6 .anchor {
+  line-height: 1.1;
+}
+ 
+.cnblogs-markdown p,
+.cnblogs-markdown blockquote,
+.cnblogs-markdown ul,
+.cnblogs-markdown ol,
+.cnblogs-markdown dl,
+.cnblogs-markdown table,
+.cnblogs-markdown pre {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+ 
+.cnblogs-markdown hr {
+  height: 2px;
+  padding: 0;
+  margin: 16px 0;
+  background-color: #e7e7e7;
+  border: 0 none;
+}
+ 
+.cnblogs-markdown ul,
+.cnblogs-markdown ol {
+  padding-left: 2em;
+  font-size: 14px;
+}
+ 
+.cnblogs-markdown ul ul,
+.cnblogs-markdown ul ol,
+.cnblogs-markdown ol ol,
+.cnblogs-markdown ol ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+ 
+.cnblogs-markdown li&gt;p {
+  margin-top: 16px;
+}
+ 
+.cnblogs-markdown dl {
+  padding: 0;
+}
+ 
+.cnblogs-markdown dl dt {
+  padding: 0;
+  margin-top: 16px;
+  font-size: 1em;
+  font-style: italic;
+  font-weight: bold;
+}
+ 
+.cnblogs-markdown dl dd {
+  padding: 0 16px;
+  margin-bottom: 16px;
+}
+ 
+.cnblogs-markdown blockquote {
+  color: #333;
+  padding: 5px 10px;
+  border: none;
+  border-left: 6px solid #e6e6e6;
+  background-color: #fafafa;
+}
+ 
+.cnblogs-markdown blockquote&gt;:first-child {
+  margin-top: 0;
+}
+ 
+.cnblogs-markdown blockquote&gt;:last-child {
+  margin-bottom: 0;
+}
+ 
+.cnblogs-markdown table {
+  display: block;
+  width: 100%;
+  overflow: auto;
+  word-break: normal;
+  word-break: keep-all;
+}
+ 
+.cnblogs-markdown table th {
+  font-weight: bold;
+}
+ 
+.cnblogs-markdown table th,
+.cnblogs-markdown table td {
+  padding: 6px 13px;
+  border: 1px solid #ddd;
+}
+ 
+.cnblogs-markdown table tr {
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+}
+ 
+.cnblogs-markdown table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+ 
+.cnblogs-markdown img {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+ 
+.cnblogs-markdown code {
+  padding: 4px 4px 2px !important;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin: 0;
+  font-size: 85%;
+  color: #c7254e;
+  background-color: #f9f2f4 !important;
+  border-radius: 4px !important;
+  border: none !important;
+  display: inline-block;
+}
+ 
+.cnblogs-markdown code:before,
+.cnblogs-markdown code:after {
+  letter-spacing: -0.2em;
+  content: "\00a0";
+}
+ 
+/*only for syntaxhighlighter */
+/*--start--*/
+.cnblogs-markdown .syntaxhighlighter table td.code {
+  width:95% !important; 
+}
+ 
+.cnblogs-markdown .syntaxhighlighter code {
+  font-family: "Consolas","Bitstream Vera Sans Mono","Courier New",Courier,monospace!important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  background-color: transparent !important;
+}
+ 
+.cnblogs-markdown .syntaxhighlighter code:before,
+.cnblogs-markdown .syntaxhighlighter code:before {
+  letter-spacing: -0.5em;
+}
+/*--end--*/
+ 
+.cnblogs-markdown pre&gt;code {
+  padding: 0;
+  margin: 0;
+  font-size: 100%;
+  word-break: normal;
+  white-space: pre;
+  background: transparent;
+  border: 0;
+}
+ 
+.cnblogs-markdown .highlight {
+  margin-bottom: 16px;
+}
+ 
+.cnblogs-markdown .highlight pre,
+.cnblogs-markdown pre {
+  padding: 8px;
+  overflow: auto;
+  font-size: 85%;
+  line-height: 1.45;
+  background-color: #f7f7f7;
+  border-radius: 3px;
+}
+ 
+.cnblogs-markdown .highlight pre {
+  margin-bottom: 0;
+  word-break: normal;
+}
+ 
+.cnblogs-markdown pre {
+  word-wrap: normal;
+}
+ 
+.cnblogs-markdown pre code {
+  display: inline;
+  max-width: initial;
+  padding: 0;
+  margin: 0;
+  overflow: initial;
+  line-height: inherit;
+  word-wrap: normal;
+  background-color: transparent;
+  border: 0;
+}
+ 
+.cnblogs-markdown pre code:before,
+.cnblogs-markdown pre code:after {
+  content: normal;
+}
+ 
+.cnblogs-markdown kbd {
+  display: inline-block;
+  padding: 3px 5px;
+  font-size: 11px;
+  line-height: 10px;
+  color: #555;
+  vertical-align: middle;
+  background-color: #fcfcfc;
+  border: solid 1px #ccc;
+  border-bottom-color: #bbb;
+  border-radius: 3px;
+  box-shadow: inset 0 -1px 0 #bbb;
+}
+ 
+.cnblogs-markdown .pl-c {
+  color: #969896;
+}
+ 
+.cnblogs-markdown .pl-c1,
+.cnblogs-markdown .pl-mdh,
+.cnblogs-markdown .pl-mm,
+.cnblogs-markdown .pl-mp,
+.cnblogs-markdown .pl-mr,
+.cnblogs-markdown .pl-s1 .pl-v,
+.cnblogs-markdown .pl-s3,
+.cnblogs-markdown .pl-sc,
+.cnblogs-markdown .pl-sv {
+  color: #0086b3;
+}
+ 
+.cnblogs-markdown .pl-e,
+.cnblogs-markdown .pl-en {
+  color: #795da3;
+}
+ 
+.cnblogs-markdown .pl-s1 .pl-s2,
+.cnblogs-markdown .pl-smi,
+.cnblogs-markdown .pl-smp,
+.cnblogs-markdown .pl-stj,
+.cnblogs-markdown .pl-vo,
+.cnblogs-markdown .pl-vpf {
+  color: #333;
+}
+ 
+.cnblogs-markdown .pl-ent {
+  color: #63a35c;
+}
+ 
+.cnblogs-markdown .pl-k,
+.cnblogs-markdown .pl-s,
+.cnblogs-markdown .pl-st {
+  color: #a71d5d;
+}
+ 
+.cnblogs-markdown .pl-pds,
+.cnblogs-markdown .pl-s1,
+.cnblogs-markdown .pl-s1 .pl-pse .pl-s2,
+.cnblogs-markdown .pl-sr,
+.cnblogs-markdown .pl-sr .pl-cce,
+.cnblogs-markdown .pl-sr .pl-sra,
+.cnblogs-markdown .pl-sr .pl-sre,
+.cnblogs-markdown .pl-src {
+  color: #183691;
+}
+ 
+.cnblogs-markdown .pl-v {
+  color: #ed6a43;
+}
+ 
+.cnblogs-markdown .pl-id {
+  color: #b52a1d;
+}
+ 
+.cnblogs-markdown .pl-ii {
+  background-color: #b52a1d;
+  color: #f8f8f8;
+}
+ 
+.cnblogs-markdown .pl-sr .pl-cce {
+  color: #63a35c;
+  font-weight: bold;
+}
+ 
+.cnblogs-markdown .pl-ml {
+  color: #693a17;
+}
+ 
+.cnblogs-markdown .pl-mh,
+.cnblogs-markdown .pl-mh .pl-en,
+.cnblogs-markdown .pl-ms {
+  color: #1d3e81;
+  font-weight: bold;
+}
+ 
+.cnblogs-markdown .pl-mq {
+  color: #008080;
+}
+ 
+.cnblogs-markdown .pl-mi {
+  color: #333;
+  font-style: italic;
+}
+ 
+.cnblogs-markdown .pl-mb {
+  color: #333;
+  font-weight: bold;
+}
+ 
+.cnblogs-markdown .pl-md,
+.cnblogs-markdown .pl-mdhf {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+ 
+.cnblogs-markdown .pl-mdht,
+.cnblogs-markdown .pl-mi1 {
+  background-color: #eaffea;
+  color: #55a532;
+}
+ 
+.cnblogs-markdown .pl-mdr {
+  color: #795da3;
+  font-weight: bold;
+}
+ 
+.cnblogs-markdown .pl-mo {
+  color: #1d3e81;
+}
+ 
+.cnblogs-markdown kbd {
+  display: inline-block;
+  padding: 3px 5px;
+  font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  line-height: 10px;
+  color: #555;
+  vertical-align: middle;
+  background-color: #fcfcfc;
+  border: solid 1px #ccc;
+  border-bottom-color: #bbb;
+  border-radius: 3px;
+  box-shadow: inset 0 -1px 0 #bbb;
+  padding-top: 20px;
+}
+ 
+.cnblogs-markdown .task-list-item {
+  list-style-type: none;
+}
+ 
+.cnblogs-markdown .task-list-item+.task-list-item {
+  margin-top: 3px;
+}
+ 
+.cnblogs-markdown .task-list-item input {
+  margin: 0 0.35em 0.25em -1.6em;
+  vertical-align: middle;
+}
+ 
+.cnblogs-markdown :checked+.radio-label {
+  z-index: 1;
+  position: relative;
+  border-color: #4183c4;
+}
+/*
+Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-license.org/
+*/
+pre {
+/*控制代码不换行*/
+    white-space: pre;
+    word-wrap: normal;
+}
+.cnblogs-markdown .hljs {
+    font-size: 16px!important;
+    font-family: consolas,monospace !important;
+    display: block;
+    overflow-x: auto;
+    padding: 0.5em;
+    background: #23241f !important;
+    color: #FFF;
+    white-space: pre;
+    word-break: normal;
+    padding: 10px 15px !important;
+}
+ 
+.hljs,
+.hljs-tag,
+.hljs-subst {
+  color: #f8f8f2;
+}
+ 
+.hljs-strong,
+.hljs-emphasis {
+  color: #a8a8a2;
+}
+ 
+.hljs-bullet,
+.hljs-quote,
+.hljs-number,
+.hljs-regexp,
+.hljs-literal,
+.hljs-link {
+  color: #ae81ff;
+}
+ 
+.hljs-code,
+.hljs-title,
+.hljs-section,
+.hljs-selector-class {
+  color: #a6e22e;
+}
+ 
+.hljs-strong {
+  font-weight: bold;
+}
+ 
+.hljs-emphasis {
+  font-style: italic;
+}
+ 
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-name,
+.hljs-attr {
+  color: #f92672;
+}
+ 
+.hljs-symbol,
+.hljs-attribute {
+  color: #66d9ef;
+}
+ 
+.hljs-params,
+.hljs-class .hljs-title {
+  color: #f8f8f2;
+}
+ 
+.hljs-string,
+.hljs-type,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-selector-id,
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-addition,
+.hljs-variable,
+.hljs-template-variable {
+  color: #e6db74;
+}
+ 
+.hljs-comment,
+.hljs-deletion,
+.hljs-meta {
+  color: #75715e;
+}
+        </style>
+  </head>
+  <body>
+    <p>[TOC]<br />
+@[TOC]</p>
+    <h2 id="section">1.字体</h2>
+    <p>
+      <em>这是斜体</em>
+      <br />
+      <strong>这是粗体</strong>
+      <br />
+      <em>
+        <strong>这是粗体加斜体</strong>
+      </em>
+      <br />
+      <del>删除线</del>
+    </p>
+    <h2 id="section-1">2.标题</h2>
+    <p>#一级标题<br />
+##二级标题<br />
+###三级标题<br />
+######六级标题</p>
+    <h2 id="3links">3.超链接</h2>
+    <h3 id="section-2">3.1.行内式</h3>
+    <p>点击这个<a href="www.baidu.com" title="鼠标悬停会出现这个tittle介绍">链接</a></p>
+    <h3 id="section-3">3.2.参考式</h3>
+    <p>我经常去的几个网站<a href="https://github.com" title="GitHub">Github</a>, <a href="https://www.zhihu.com" title="知乎">知乎</a>以及<a href="http://www.jianshu.com" title="简书">简书</a>，这篇手册是从<a href="http://www.jianshu.com" title="简书">简书</a>上获得的<br />
+我经常去的几个网站<a href="https://github.com" title="GitHub">Github</a>, <a href="https://www.zhihu.com" title="知乎">知乎</a>以及<a href="http://www.jianshu.com" title="简书">简书</a>，这篇手册是从<a href="http://www.jianshu.com" title="简书">简书</a>上获得的</p>
+    <h3 id="section-4">3.3.自动连接</h3>
+    <p>
+      <a href="http://www.baidu.com">http://www.baidu.com</a>链接显示的就是链接本身</p>
+    <h3 id="section-5">3.4.锚点</h3>
+    <p>点击跳转到<a href="#3links" id="3links">3.超链接</a></p>
+    <h2 id="section-6">4.列表</h2>
+    <h3 id="section-7">4.1.无序列表</h3>
+    <ul>
+      <li>无序列表表项一</li>
+      <li>无序列表表项二</li>
+      <li>无序列表表项三</li>
+    </ul>
+    <h3 id="section-8">4.2.有序列表</h3>
+    <ol>
+      <li>有序列表表项一</li>
+      <li>有序列表表项二</li>
+      <li>有序列表表象三</li>
+    </ol>
+    <p>
+      <strong>转义</strong>
+      <br />
+想在一行写下“1986. what a great season.”会被解释成有序列表，在句点前加上反斜杠可避免：<br />
+1986. What a great season.</p>
+    <h3 id="section-9">4.3.定义型列表</h3>
+    <dl>
+      <dt>Markdown  </dt>
+      <dd>轻量级文本标记语言，可以转换成html，pdf等格式（左侧有一个可见的冒号和一个不可见的Tab）</dd>
+      <dt>代码块 2    </dt>
+      <dd>
+        <p>这是代码块的定义（左侧有一个可见的冒号和四个不可见的空格）</p>
+        <pre>
+          <code>import numpy as np
+print(np.version)
+</code>
+        </pre>
+      </dd>
+    </dl>
+    <h3 id="section-10">4.4 列表缩进</h3>
+    <ul>
+      <li>
+        <p>轻轻的我走了， 正如我轻轻的来； 我轻轻的招手， 作别西天的云彩。<br />
+那河畔的金柳， 是夕阳中的新娘； 波光里的艳影， 在我的心头荡漾。<br />
+软泥上的青荇， 油油的在水底招摇； 在康河的柔波里， 我甘心做一条水草！</p>
+      </li>
+      <li>
+        <p>那榆荫下的一潭， 不是清泉， 是天上虹； 揉碎在浮藻间， 沉淀着彩虹似的梦。<br />
+寻梦？撑一支长篙， 向青草更青处漫溯； 满载一船星辉， 在星辉斑斓里放歌。<br />
+但我不能放歌， 悄悄是别离的笙箫； 夏虫也为我沉默， 沉默是今晚的康桥！</p>
+      </li>
+      <li>
+        <p>悄悄的我走了， 正如我悄悄的来； 我挥一挥衣袖， 不带走一片云彩。</p>
+      </li>
+    </ul>
+    <h3 id="section-11">4.5 包含引用的列表</h3>
+    <p>如果要在列表项目内放进引用，那 &gt; 就需要缩进：</p>
+    <ul>
+      <li>
+        <p>阅读的方法:</p>
+        <blockquote>
+          <p>打开书本。<br />
+打开电灯。</p>
+        </blockquote>
+      </li>
+    </ul>
+    <h2 id="section-12">5.引用</h2>
+    <p>在被引用的文本前加上&gt;符号即可</p>
+    <blockquote>
+      <p>这是一个有两段文字的引用<br />
+无意义的占行文字1.</p>
+      <p>无意义的占行文字4.</p>
+    </blockquote>
+    <p>也可只在整个段落的第一行最前面加上&gt;</p>
+    <blockquote>
+      <p>这是一个有两段文字的引用,<br />
+无意义的占行文字1.</p>
+      <p>无意义的占行文字3.<br />
+无意义的占行文字4.</p>
+    </blockquote>
+    <h2 id="section-13">6.插入图像</h2>
+    <p>
+      <img src="https://www.baidu.com/s?wd=github&amp;usm=3&amp;ie=utf-8&amp;rsv_cq=markdown%E6%80%8E%E4%B9%88%E6%8D%A2%E8%A1%8C&amp;rsv_dl=0_right_recommends_merge_28335&amp;euri=3366456" alt="图象：" title="Github" />
+    </p>
+    <h2 id="section-14">7.注脚</h2>
+    <p>使用 Markdown<a id="fnref:1" href="#fn:1" class="footnote-ref"><sup>1</sup></a>可以效率的书写文档, 直接转换成 HTML<a id="fnref:2" href="#fn:2" class="footnote-ref"><sup>2</sup></a>, 你可以使用简书或者支持Markdown的编辑器进行书写。<br />
+注脚与注脚之间必须空一行，不然会失效。成功后会发现，即使你没有把注脚写在文末，经Markdown转换后，也会自动归类到文章的最后。</p>
+    <h2 id="section-15">8.数学公式</h2>
+    <p>质能守恒方程可以用一个很简洁的方程式 <span class="math">E=mc^2</span> 来表达。<br />
+$$可以表示整行公式<br /><span class="math">\sum_{i=1}^n a_i=0</span></p>
+    <h2 id="section-16">9.表格</h2>
+    <p>
+      <strong>语法说明</strong>
+    </p>
+    <ol>
+      <li>第一行为表头，第二行分隔表头和主体部分，第三行开始每一行为一个表格行。</li>
+      <li>列与列之间用管道符|隔开。原生方式的表格每一行的两边也要有管道符。</li>
+      <li>第二行还可以为不同的列指定对齐方向。默认为左对齐，在-右边加上:就右对齐。</li>
+    </ol>
+    <table>
+      <thead>
+        <tr>
+          <th>学号</th>
+          <th>姓名</th>
+          <th style="text-align: right;">分数</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>小明</td>
+          <td>男</td>
+          <td style="text-align: right;">75</td>
+        </tr>
+        <tr>
+          <td>小红</td>
+          <td>女</td>
+          <td style="text-align: right;">79</td>
+        </tr>
+        <tr>
+          <td>小陆</td>
+          <td>男</td>
+          <td style="text-align: right;">92</td>
+        </tr>
+      </tbody>
+    </table>
+    <h2 id="section-17">10.代码</h2>
+    <p>插入程序代码的方式有两种，一种是利用缩进(Tab), 另一种是利用“`”符号（在ESC键下方）包裹代码。</p>
+    <p>
+      <strong>语法说明</strong>
+      <br />
+插入行内代码，即插入一个单词或者一句代码的情况，使用<code>code</code>这样的形式插入。<br />
+插入多行代码，可以使用缩进或者<code>code</code>,具体看示例。</p>
+    <pre>
+      <code class="language-java">package algorithm.test;
+
+import java.util.Stack;
+/**
+ * @author wangzk
+ * @date 2020-04-29 10:08
+ */
+public class StackWithMin {
+
+    private Stack stack = new Stack&lt;Integer&gt;();
+    private int min = Integer.MAX_VALUE;
+
+    public void push(int node) {
+        if (node &lt; min) min = node;
+        stack.push(node);
+    }
+}
+</code>
+    </pre>
+    <h2 id="section-18">分隔符</h2>
+    <p>一下内容可能有的解释器不支持</p>
+    <hr />
+    <h2 id="html">11.HTML原始码</h2>
+    <p>在代码区块里面， &amp; 、 &lt; 和 &gt; 会自动转成 HTML 实体，这样的方式让你非常容易使用 Markdown 插入范例用的 HTML 原始码，只需要复制贴上，剩下的 Markdown 都会帮你处理。
+<strong>注意</strong><br />
+有的解释器可能不支持</p>
+    <pre>
+      <code>&lt;div class="footer"&gt;
+   © 2004 Foo Corporation
+&lt;/div&gt;
+
+&lt;table&gt;
+    &lt;tr&gt;
+        &lt;th rowspan="2"&gt;值班人员&lt;/th&gt;
+        &lt;th&gt;星期一&lt;/th&gt;
+        &lt;th&gt;星期二&lt;/th&gt;
+        &lt;th&gt;星期三&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;李强&lt;/td&gt;
+        &lt;td&gt;张明&lt;/td&gt;
+        &lt;td&gt;王平&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+</code>
+    </pre>
+    <h2 id="todo-list">12. Todo List</h2>
+    <p>近期任务安排:</p>
+    <ul class="contains-task-list">
+      <li class="task-list-item">
+        <input disabled="disabled" type="checkbox" checked="checked" /> 整理Markdown手册</li>
+      <li class="task-list-item">
+        <input disabled="disabled" type="checkbox" /> 改善项目
+<ul class="contains-task-list"><li class="task-list-item"><input disabled="disabled" type="checkbox" checked="checked" /> 优化首页显示方式</li><li class="task-list-item"><input disabled="disabled" type="checkbox" checked="checked" /> 修复闪退问题</li><li class="task-list-item"><input disabled="disabled" type="checkbox" /> 修复视频卡顿</li></ul></li>
+      <li class="task-list-item">
+        <input disabled="disabled" type="checkbox" /> A3项目修复
+<ul class="contains-task-list"><li class="task-list-item"><input disabled="disabled" type="checkbox" checked="checked" /> 修复数值错误</li></ul></li>
+    </ul>
+    <div class="footnotes">
+      <hr />
+      <ol>
+        <li id="fn:1">
+          <p>Markdown是一种纯文本标记语言<a href="#fnref:1" class="footnote-back-ref">↩</a></p>
+        </li>
+        <li id="fn:2">
+          <p>HyperText Markup Language 超文本标记语言<a href="#fnref:2" class="footnote-back-ref">↩</a></p>
+        </li>
+      </ol>
+    </div>
+  </body>
+</html>
