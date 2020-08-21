@@ -1,0 +1,133 @@
+[TOC] 
+---
+
+
+### String、StringBuilder、StringBuffer  
+1. String
+String的value[]数组是final的，不可修改，对string进行拼接/修改时会创建新的String对象。  
+
+2. StringBuffer
+StringBuffer正是为了解决修改String产生过多中间对象的问题(```@Since JDK1.0```)，提供append、replace、insert、delete等方法，但它是线程安全的，开销较大；  
+
+3. StringBuilder
+StringBuilder(```@Since JDK1.5```)是为了解决StringBuffer开销大的问题，去掉了StringBuffer的synchronized，，更高效；  
+StringBuffer 和 StringBuilder二者都继承自AbstractStringBuilder ，底层都是利用可修改的char数组。  
+
+4. 用哪一个
+少量字符串操作还是用String，易读；  
+需要大量拼接/修改操作时，根据是否需要线程安全来选择StringBuffer和StringBuilder。  
+使用StringBuffer 和 StringBuilder时注意能预知大小就在new的时候设置好capacity，避免扩容开销(二者默认capacity为16，扩容时会用Arrays.copyOf()丢弃原有数组然后创建新的数组)。
+
+
+### stream操作
+[JDK8 Stream 数据流效率分析](https://blog.csdn.net/Al_assad/article/details/82356606) 
+1. 怎么用
+- 数据源：Collection、I/O流
+- 中间操作：map()、filter()、distinct()、sorted()、limit()、mapToInt()、boxed()……
+- 终端操作：收集为Collection、收集为Array、收集为String、count统计元素数量、max统计最大值、min统计最小值……
+```java
+List<Integer> itgList = new ArrayList<Integer>();
+Random random = new Random();
+        for (int i = 0; i < 10; i++) itgList.add(random.nextInt());
+List<Integer> streamList = itgList.stream()
+                .mapToInt(x -> x)
+                .map(x -> x+1)
+                .filter(x -> x>200)
+                .sorted()
+                .boxed()
+                .collect(Collectors.toCollection(ArrayList::new));
+				
+List<String> strList = new ArrayList<String>();
+        for (int i = 0; i < 10; i++)  strList.add("str");
+String strResult = strList.stream()
+                .collect(Collectors.joining(","));
+```
+
+2. 特点
+- 只遍历一次，流水线操作
+- 内部迭代，而Collector的Iterator是一种外部迭代
+
+3. 什么时候用
+- 在小规模的集合(<10000)中，stream的效率其实不如iterator，但遍历开销基本上都小于1毫秒，即使是成倍的差距也可忽略不计；
+而stream的写法要比iterator高效且易读，尤其是要进行多种操作时。
+- 在超大规模的集合中(>1000w)，stream的遍历效率要好于iterator，但也不会好太多，parallelStream会好很多(前提时能用到多核)。
+- 使用建议：stream中含有装箱类型时，在进行中间操作前，最好手动转成对应的数值流，减少频繁的拆箱装箱而引起的性能损失，最后再boxed()装回去。
+
+### Comparable接口和Comparator接口
+1. Comparable
+一个类(比如基本类型的封装类以及String类等，是的，连Boolean也实现了)实现了Comparable接口(实现compareTo()方法)，则该类自带比较器。  
+在```Arrays.sort(T[], Comparator c)```、```Collections.sort(List l ist)```方法中，隐含传递着Comparator参数为null，在排序比较时直接调用该类对象.compareTo(T another)方法。  
+```compareTo(T another)``` 返回正数则表示当前对象大于another。
+
+2. Comparator
+Comparator就是个外部比较器了，主要是提供给那些没有实现Comparable接口的类。  
+在```Arrays.sort(T[], Comparator c)```、```Collections.sort(List list, Comparator c)```方法中，需要自定义Comparator接口并实现其```compare(T o1, T o2)```方法，在排序比较时会调用该方法。  
+```compare(T o1, T o2)```返回整数则表示o1大于o2。  
+```java
+int[] arr = new int[10];
+Collections.sort(Arrays.stream(arr).boxed().collect(Collectors.toList()),
+                    new Comparator<Integer>() {
+                        @Override
+                        public int compare(Integer o1, Integer o2) {
+                            return 0;
+                        }
+                    }
+            );
+			
+// Arrays.stream(arr).boxed().collect(Collectors.toList()).sort((x1, x2) -> x1 - x2);
+```
+3. Collections、Arrays
+Collections排序有两个方法，```Collections.sort(List list)```和```Collections.sort(List list, Comparator c)```，看到这个sort方法就会想起```Arrays.sort()```方法，再考虑到ArrayList/Vector、HashMap、HashSet(内部维护一个HashMap)内部都是维护一个数组，就会想到是不是也可以用Arrays.sort()方法。  
+继续看```Collections.sort```的实现，其实际上是调用```list.sort(c)```方法，而list.sort又是调用```Arrays.sort(list.toArray())```方法，这样连LinkedList也转为数组来调用```Arrays.sort()```。【这么看来，其实List对象的排序可以直接用```list.sort(Comparator c)```。】  
+```java
+// Collections.java
+public static <T> void sort(List<T> list, Comparator<? super T> c) {
+        list.sort(c);
+    }
+
+//List.java
+default void sort(Comparator<? super E> c) {
+        Object[] a = this.toArray();
+        Arrays.sort(a, (Comparator) c);
+        ListIterator<E> i = this.listIterator();
+        for (Object e : a) {
+            i.next();
+            i.set((E) e);
+        }
+    }
+``` 
+那HashMap呢？   
+
+
+4. [HashMap的排序](https://zhuanlan.zhihu.com/p/80455770)
+主要是两种思路：
+- 转为TreeMap
+- HashMap本身是一个集合，可以利用集合的排序：Collections.sort/Arrays.sort、Stream API
+
+4.1 转为TreeMap
+```java
+	TreeMap<String, Integer> treeMap = new TreeMap<>(unsortedMap);
+    System.out.println(treeMap);
+
+```
+
+4.2 Collections.sort
+```java
+	List<HashMap.Entry<String, Integer>> listOfMap = new ArrayList<>(unsortedMap.entrySet());
+	Collections.sort(listOfMap, (o1, o2) -> o1.getKey().compareTo(o2.getKey()));
+	System.out.println(listOfMap);
+```
+这种方法比较灵活，可以根据key排序，也可以根据value排序；转List也可以只获取key(.keySet())，也可以只获取value(.values())，也可以都保存(.entrySet())。
+
+4.3 Stream API
+这里要知道的是，集合类包含两大系统，Collection接口和Map接口。
+- Collection接口下有List接口、Set接口和Queue接口。
+- Map接口就是Map系列，需要排序则实现SortedMap接口；但Map可以生成Collection。
+而Collection接口有stream()方法，可以获得集合的stream，而Map接口没有。  
+所以这里也是像Collections.sort那样，获取map的entrySet/keySet/values。
+```java
+List<String> sortedKeyList = unsortedMap.keySet().stream()
+                .sorted(String::compareTo)
+                .collect(Collectors.toList());
+System.out.println(sortedKeyList)
+```
