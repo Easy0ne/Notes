@@ -1,6 +1,16 @@
 [TOC] 
 ---
 
+### 运算符优先级
+[java运算符优先级记忆口诀](https://www.cnblogs.com/gavin-yao/p/10595835.html):  
+单目乘除为(位)关系，逻辑三目后(填词，无意义)赋值。  
+强制类型转换优先级是高于乘除但低于单目的：
+```java
+int a = (int) Math.random()*10
+// a始终为0
+```
+实际开发中不用刻意去记，小括号写着方便也易读懂。
+
 ### ==、equals()以及hashcode()
 ref: [==、equals()、hashcode()](https://www.cnblogs.com/kexianting/p/8508207.html)
 1. ```==```比较的是对象地址(引用)，看是否为同一对象  
