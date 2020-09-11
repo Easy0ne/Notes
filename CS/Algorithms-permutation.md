@@ -16,7 +16,9 @@
 1. 基本思路  
 先举例{a, b, c, d}手动排列，全排列(A_n^n)，就是从n个元素中先后拿出n个元素构成序列，是有先后顺序的。   
 一张图可以理解思路：    
-![](./Permutation.png)  
+![](https://img2020.cnblogs.com/blog/1211843/202008/1211843-20200829205758119-778547135.png)
+
+  
 ```p{a, b, c, d}```求解可以先后从```{a, b, c, d}```中先拿出一个元素来，再将剩下的元素进行全排列。
 比如，先拿出a来，然后```{a} + p{b, c, d}```就可以遍历完解空间的1/4了；  
 具体实现时，将某个元素取出来、再拼接剩下的操作，对数组来说修改的时间复杂度会较高(链表可能会好点)。所以，可以考虑将要取出的元素放在首位————与首位元素先交换，排列完剩下的元素集合后再换回去。   
@@ -118,12 +120,19 @@ public List<List<Integer>> permuteByDictSort(int[] nums){
 字典序全排列寻找的下一个序列必然是“大于”当前序列的，不会存在重复的问题(在实现上是因为<=及>=都被排除了)。
 
 
-## 子集问题(组合问题)
+## 组合问题
 
-### 相关例题
+### 子集
 [leeCode 78. 子集](https://leetcode-cn.com/problems/subsets/)
+[leetCode 131. 分割回文串](https://leetcode-cn.com/problems/palindrome-partitioning/)
 
-### 求解思路
+### 组合总和
+[leetCode 39. 组合总和](https://leetcode-cn.com/problems/combination-sum/)  
+[leetCode 40. 组合总和 II](https://leetcode-cn.com/problems/combination-sum-ii/)  
+[leetCode 246. 组合总和 III](https://leetcode-cn.com/problems/combination-sum-iii/)
+
+
+### 子集问题求解思路
 1. 动态规划  
 求解思路类似动态规划，在已有解的基础上进行求解。  
 例如，已有数组[1,2,3]的全部子集(记 子集的集合S)，则数组[1,2,3,4]的子集包含两部分，一部分就是S，另一部分是在S中每一个子集的基础上添加4。  
@@ -157,47 +166,33 @@ public List<List<Integer>> subsets(int[] nums) {
 2. 位运算  
 比较经典的求子集思路
 ```java
-public List<List<Integer>> subsets(int[] nums) {
+public List<List<Integer>> subsetsByBits(int[] nums) {
         if (nums == null || nums.length == 0) return null;
         List<List<Integer>> result = new LinkedList<>();
-        result.add(new LinkedList<>());
         int n = nums.length;
-        for (int i = 0; i < n; i++) {
-            // 不能在使用iterator遍历的时候对List进行修改
-//            for (List<Integer> subset: result){
-//                List<Integer> newSubset = new LinkedList<>(subset);
-//                newSubset.add(nums[i]);
-//                result.add(newSubset);
-//            }
-            int numOfSubsetsCur = result.size();
-            int newNum = nums[i];
-            for (int j = 0; j < numOfSubsetsCur; j++) {
-                List<Integer> newSubset = new LinkedList<>(result.get(j));
-                newSubset.add(newNum);
-                result.add(newSubset);
+        int n_subsets = (int)Math.pow(2, n);
+        for (int i = 0; i < n_subsets; i++) {
+            int k = i;
+            List<Integer> subset = new LinkedList<>();
+            for (int j = n-1; j >= 0; j--) {
+                if ((k&1) == 1){
+                    subset.add(nums[j]);
+                }
+                k = k>>1;
             }
+            result.add(subset);
         }
         return result;
     }
 
 ```
 
-
-## 组合总和(可重复组合问题)
-
-### 相关例题
-[leetCode 39. 组合总和](https://leetcode-cn.com/problems/combination-sum/)  
-[leetCode 40. 组合总和 II](https://leetcode-cn.com/problems/combination-sum-ii/)  
-
-### 求解思路
-1. 动态规划  
-典型的恰好装满背包问题，只不过不是求最佳的解法，但可以利用记忆。
-
-2. 回溯法，见下一节  
-
+### 组合总和问题求解思路
+组合总和问题也可以像子集问题一样通过类似动态规划的方法和位运算的方法求解，这里主要探索下回溯法：
 
 ## 回溯法
 转自[回溯法的思想与实现](https://leetcode-cn.com/problems/combination-sum/comments/224875)  
+ref [LeetCode刷题 回溯法](https://zhuanlan.zhihu.com/p/65861269)
 这里单独将回溯法作为一个小节，因为回溯法的思想在解决上述问题都比较通用。  
 先看下上面所提的全排列基本思路的代码，其实就是使用了回溯法，先记住代码大概长什么样子，然后往下面看(脑子里要有棵多叉树)。  
 
@@ -248,8 +243,12 @@ def backtrack(state):
 ### 回溯法的使用
 再说一下使用回溯法求解问题的思路。回溯法使用了递归，本质上还是对原问题进行分解，找到合适的子问题和到达子问题(状态)的路径。以全排列和全部子集为例，在求```{1,2,3,4}```的全排列时，第一步选择是从```{1,2,3,4}```中选择1/2/3/4放到序列的第一个位置上；而在求```{1,2,3,4}```的全部子集时，第一步选择是，要不要将1添加到子集中。具体区别可见下图。可见，不同问题需要设计不同的状态(子问题)和路径。
 值得注意的是，只有叶子节点才是解。  
-![](./permutation_tree.png)  
-![](./subsets_tree.png)  
+![](https://img2020.cnblogs.com/blog/1211843/202008/1211843-20200829205716233-396157150.png)
+
+  
+![](https://img2020.cnblogs.com/blog/1211843/202008/1211843-20200829205734123-1217836617.png)
+
+  
 
 **回溯法的代码实现其实就是在构造这棵求解树的所有节点，在实现过程要知道这棵求解树长什么样子。**再结合全排列的代码分析下回溯代码模板：
 - 首先是for语句所有可选路径的实现，在上面的两张图(全排列和全部子集)中，可以看出，不同状态下的for可选路径都是不同的，上面全排列的回溯实现是根据参数中传递的nums和start来记录的，如果没有这个start，每个状态都会遍历nums中的所有元素，最终会有重复解。  
@@ -262,7 +261,14 @@ def backtrack(state):
 这里给出求子集和组合总和的代码，以便总结回溯法的套路：
 ```java
 // 回溯求子集
-public void subsetsBacktrack(Deque<Integer> state, int[] nums, int start, List<List<Integer>> result) {
+/*
+dfs
+    思路一：对于nums中的每个数字，下标i从0到n-1, 可选path都有两条：让nums[i]加入当前集合和不让nums[i]加入当前集合,求解树是二叉的,深度为n
+    所以，时间复杂度为O(2^n)，思路很简单。用这种思路要注意：
+    一、因为只有叶子节点才是解，如果中途不能剪枝，很有可能会超时；
+    二、这种方法要求给定的nums中不包含重复元素，否则结果集会重复。如果nums有重复，可以转dfs思路二。
+*/
+public void subsetsDfs(Deque<Integer> state, int[] nums, int start, List<List<Integer>> result) {
         if (start == nums.length) {
             result.add(new ArrayList<>(state));
         } else {
@@ -284,21 +290,21 @@ public void subsetsBacktrack(Deque<Integer> state, int[] nums, int start, List<L
 // 回溯求组合和
 
 	/*
-    关键是如何设计路径来构造求解树
-    这里给出的方法是，从可选数字中选一个添加到当前state中，为了避免重复解，可选数字只能是比到达当前状态的路径所代表数字更大或等于的数字。
-    例如,对于{1,2,3,4},初始状态[],在第一次选择了3得到状态[3]后，接下来只能在3/4中选择，不允许选择1/2是因为在选择了1/2的状态中已经有选择3的。
-    其实，这种思路更容易想起动态规划。
+	dfs
+	思路二：对于[0,1,2,3,4],初始state为[],可选路径为0/1/2/3/4,当第一次选择了2,state为[2]，那么下一次的可选路径只有3/4，不允许选择0/1/2是因为在选择了1/2的状态中已经有选择3及后面的了。
+	可选数字只能是比到达当前状态的路径所代表数字更大或等于的数字，这样可以避免求解集中有重复解
+	关键是要理解求解树
      */
-    public List<List<Integer>> combinationSumByBacktrack(int[] candidates, int target) {
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
         if (candidates == null || candidates.length == 0) return null;
         Arrays.sort(candidates);
         List<List<Integer>> result = new LinkedList<>();
         Deque<Integer> state_root = new LinkedList<>();
-        combinationSumBacktrack(state_root, candidates, 0, target, result);
+        combinationSumDfs(state_root, candidates, 0, target, result);
         return result;
     }
 
-    public void combinationSumBacktrack(Deque<Integer> state, int[] nums, int start, int target, List<List<Integer>> result) {
+    public void combinationSumDfs(Deque<Integer> state, int[] nums, int start, int target, List<List<Integer>> result) {
         if (target == 0) {
             result.add(new ArrayList<>(state));
         } else {
@@ -313,9 +319,6 @@ public void subsetsBacktrack(Deque<Integer> state, int[] nums, int start, List<L
         }
     }
 
-
 ```
+以上两种思路都可以用来求解组合问题，但要注意在不同的问题中，nums可能会重复，如果nums重复，只能用第二种思路，
 其实，通过这个例子更能看出来回溯和动态规划的区别，动态规划可以有效地利用记忆，另外一点就是上面说的动态规划更强调找“最优”，这里想到动态规划是因为利用记忆。   
-
-
-

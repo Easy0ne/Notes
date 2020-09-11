@@ -139,5 +139,10 @@ Java内存中的虚拟机栈、本地方法栈的内存大小分配都是根据�
 - 分代收集，不是什么新算法，只是上面算法综合。Yong区用复制，Old用标记-整理或标记-清除
 
 
+### Java类加载机制
+[超详细java中的ClassLoader详解](https://blog.csdn.net/briblue/article/details/54973413)
+
+
+
 ## 推荐阅读
 [美团技术团队](https://tech.meituan.com/tags/java.html)

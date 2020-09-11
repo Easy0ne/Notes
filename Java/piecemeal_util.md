@@ -211,3 +211,89 @@ public void testTransform() {
         System.out.println(characterLinkedHashSet);
     }
 ```
+
+### Pattern和Matcher——字符匹配
+参考[Java Pattern和Matcher字符匹配详解](https://blog.csdn.net/zengxiantao1994/article/details/77803960)  
+1. Pattern  
+经典的用法，配合Matcher对象：
+```java
+Pattern p =Pattern.compile("\\d+");
+// Pattern的构造方法是私有的，通过静态的简单工厂方法compile创建Pattern对象，并且此对象是不可改变的，是线程安全的，可供过的Matcher使用。
+Matcher m =p.matcher("23ab23");
+boolean b = m.matches();
+```
+也可：
+```java
+boolean b =Pattern.matches("a*b", "aaaaab");
+// 单次匹配可用它
+```
+示例：
+```java
+// 使用Pattern.compile方法编译一个正则表达式，创建一个匹配模式
+Pattern pattern = Pattern.compile("\\?|\\*");
+
+// split方法对字符串进行分割
+// 123 123 456 456
+String[]splitStrs = pattern.split("123?123*456*456");
+for (int i = 0; i < splitStrs.length; i++) {
+	System.out.print(splitStrs[i] + "  ");
+}
+
+// Pattern.matches用给定的模式对字符串进行一次匹配，（需要全匹配时才返回true）
+System.out.println("Pattern.matches(\"\\\\d+\",\"2223\") is " + Pattern.matches("\\d+", "2223"));
+System.out.println("Pattern.matches(\"\\\\d+\", \"2223aa\")is " + Pattern.matches("\\d+", "2223aa"));
+```
+2. Matcher  
+2.1. Matcher类提供了三个匹配操作方法，三个方法均返回boolean类型，当匹配到时返回true，没匹配到则返回false。  
+	- boolean matches()最常用方法：尝试对整个目标字符展开匹配检测，也就是只有整个目标字符串完全匹配时才返回真值。
+	- boolean lookingAt()对前面的字符串进行匹配，只有匹配到的字符串在最前面才会返回true。
+	- boolean find()：对字符串进行匹配，匹配到的字符串可以在任何位置。    
+2.2. find()方法通常需要配合匹配器的状态来完成后续操作：
+	- intstart()：返回当前匹配到的字符串在原目标字符串中的位置；
+	- int end()：返回当前匹配的字符串的最后一个字符在原目标字符串中的索引位置；
+	- String group()：返回匹配到的子字符串。
+以上三个方法均有相应的重载方法: int start(int i)，int end(int i)，int group(int i)，Mathcer类还有一个groupCount()用于返回有多少组。  
+2.3. 此外，Matcher类还有String replaceAll(Stringr eplacement)、String replaceFirst(Stringreplacement)等方法，String.replaceXXX()方法就是调用此方法的。  
+3. 实例：
+```java
+Pattern p = Pattern.compile("([a-z\\|A-Z]+)(\\d+)(\\d+[a-z|A-Z]+)");
+Matcher m = p.matcher("aA2323Aa");
+m.find();
+for (int i = 0; i <= m.groupCount(); i++) {
+	System.out.println(String.format("group(%d) is %s,\t\t start(%d) is %d,\t\t end(%d) is %d",
+			i, m.group(i), i, m.start(i), i, m.end(i)));
+}
+```
+
+4. 其他：
+[贪婪与非贪婪的使用](https://blog.csdn.net/qq_41455420/article/details/79810006)  
+
+
+### List使用的一些注意事项
+1. 遍历时删除  
+	``` List<String> list = new ArrayList<>();```  
+	``` for (String s: list) list.remove(s)``` 肯定是不行的，Java集合类都含有一个modCount属性，每次增删改都会modCount++，其内部迭代器的next()方法会先调用checkForComodification()方法判断modCount == expectedModCount(expectedModCount是Iterator的属性，modCount是集合对象的属性)。
+
+2. Iterator.remove()  
+	remove会调用list的remove()方法，但在调用后会令expectedModCount = modCount，从而在checkForComodification()时通过检查。
+	```java
+	 Iterator<String> iterator = list.iterator();
+        while (iterator.hasNext()) {
+            String s = iterator.next();
+            if ("d".equals(s)) {
+                iterator.remove();//使用迭代器的删除方法删除
+            }
+        }
+	```
+3. for i的外部迭代方式
+	```java
+        for (int i = 0; i < list.size(); i++) {
+            System.out.println("list当前长度:" + list.size());
+            if ("d".equals(list.get(i))) {
+                // list.remove(i); 直接删除会让i后面的那个转移到i的位置，从而不经过下次if检查。
+				// list.remove(i--);
+            }
+        }
+	```
+	或者直接倒叙遍历删除。
+
