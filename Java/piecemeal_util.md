@@ -1,4 +1,5 @@
 [TOC] 
+
 ---
 
 
@@ -102,7 +103,7 @@ default void sort(Comparator<? super E> c) {
 4. [HashMap的排序](https://zhuanlan.zhihu.com/p/80455770)
 主要是两种思路：
 - 转为TreeMap
-- HashMap本身是一个集合，可以利用集合的排序：Collections.sort/Arrays.sort、Stream API
+- [HashMap](https://tech.meituan.com/2016/06/24/java-hashmap.html)本身是一个集合，可以利用集合的排序：Collections.sort/Arrays.sort、Stream API
 
 4.1 转为TreeMap
 ```java
