@@ -66,10 +66,10 @@ public class VolatileTest {
 }
 ```
 ref:[volatile关键字的作用](https://www.cnblogs.com/xd502djj/p/9873067.html)
-- volatile保证了当一个线程修改了变量时(该线程将工作区中的变量副本store&write到主内存中了)，强制其他使用到这个变量的线程去主内存中读取新值。
-- volatile可以保证单次读(read&load)/写(store&write)操作的原子性(通过禁止指令重排序优化)，但像i++这样的复合操作是不能保证原子性的(i++用到了read&load&use&assign&store&write操作)。
+- volatile保证了当一个线程修改了变量时，会强制将该线程工作区中的变量副本store&write到主内存中，强制其他使用到这个变量的线程去主内存中读取新值。
+- volatile禁止对变量的指令重排序，单线程下重排序对结果是没有影响的(这是JVM可以保证的)，但多线程中指令重排序可能会和预期的不一样，[举例](https://baijiahao.baidu.com/s?id=1667840029586081215)。
+	- 注意：volatile可以保证单次读(read&load)/写(store&write)操作的原子性(通过禁止指令重排序优化)，但像i++这样的复合操作是不能保证原子性的(i++用到了read&load&use&assign&store&write操作)。
 3. 基本原理
-
 - 对于上述第一点，变量的可见性，主要是通过volatile变量写操作的两个特性实现的：
 (1) 修改volatile变量时，会强制将修改后的值刷新到主内存中；
 (2) 修改volatile变量后，会导致其他线程工作内存中对应的变量值失效，从而不得不从主内存中重新读取。
@@ -170,15 +170,21 @@ getAndAddInt方法拿到内存位置的最新值v，使用CAS尝试将内存位�
 
 
 ### 垃圾回收GC
-ref:[Java垃圾回收](https://www.cnblogs.com/czwbig/p/11127159.html) 未完。
+ref:[Java垃圾回收](https://www.cnblogs.com/czwbig/p/11127159.html) 。
 1. Java垃圾回收主要关注的是堆，也有方法区  
+![image](./JVM1.png "JVM")  
 ![image](./JVM.png "JVM")   
 Java内存中的虚拟机栈、本地方法栈的内存大小分配都是根据类结构可以确定的，并且随线程而生灭；而堆内的对象的个数及类型在运行时动态不确定的，这部分需要由垃圾收集器来进行管理。
 
-2. 哪些对象需要被回收  
+2. [哪些对象需要被回收](https://blog.csdn.net/tjiyu/article/details/53982412)
 堆中不被引用的对象，可通过两种方法确定：  
 - 引用计数法，但不能解决循环引用问题
 - GC Roots可达性分析
+	- GC Roots包括的对象
+	- 至少两次标记，finalize()是最后一次逃离死亡的机会
+缓解Stop the World：
+	- 安全点
+	- 安全区域
 方法区主要回收两部分：
 - 废弃常量，与堆中不被引用的对象类似
 - 无用的类，需要同时满足三个条件
@@ -191,6 +197,30 @@ Java内存中的虚拟机栈、本地方法栈的内存大小分配都是根据�
 - 标记-整理，标记后让所有存活对象像一端移动，直接清掉端边界以外的内存
 - 分代收集，不是什么新算法，只是上面算法综合。Yong区用复制，Old用标记-整理或标记-清除
 
+5. [垃圾收集器](https://blog.csdn.net/tjiyu/article/details/53983650)
+- 新生代
+	- Serial： 是hotsopt在client模式下的默认新生代收集器
+	- ParNew： 是Serial的多线程版本
+	- Parallel Scavenge： 高吞吐量为目标而不是最小化停顿时间，适合批处理、科学计算的应用程序，"-XX:MaxGCPauseMillis"可以设置Stop the world的时间
+- 老年代
+	- Serial Old： 主要用于Client模式，Server模式下可作为CMS的备用方案(Concurrent Mode Failure时使用)。
+	- Parallel Old：1.6之后提供，Parallel Scavenge的老年代版本，与Parallel Scavenge配合用于以高吞吐量为目标的应用。
+	- CMS(Concurrent Mark Sweep)： 1.5之后提供，以最小化Stop the world时间为目标，Web服务器上最经常使用
+		- 初次标记(Stop the world，单线程标记直接关联)
+		- 并发标记(与用户线程并行执行，GC Roots Tracing)
+		- 重新标记(Stop the wordl，多线程修正工作)
+		- 并发清除(与用户现场并行执行，不压缩、会有碎片，且需要预留空间)
+- G1：JDK7之后的商用收集器
+	- 并行执行，缩短"Stop The World"停顿时间
+	- 能管理整个堆，弱化代的概念，将整个堆划分为多个大小相等的独立区域(Region)；
+	- 整体上用标记整理，局部Region用复制算法；
+	- 可预测的停顿：低停顿的同时实现高吞吐量，可以控制垃圾收集消耗的时间不超过N毫秒；
+	- 整个过程类似CMS，但最后的清除/整理阶段，G1是筛选高回收价值的Region来回收的(会维护一个Region回收价值的列表)；
+	- 一个对象被不同Region引用的问题解决：每个Region维护一个Remembered Set，避免全局扫描。
+	
+7. 其他
+[JVM内存逃逸](https://blog.csdn.net/Dear_UU/article/details/96458126)
+[]
 
 ### Java的编译解释与类加载机制
 [JVM是怎么和操作系统交互的](https://blog.csdn.net/u013256816/article/details/103306252)
@@ -206,10 +236,15 @@ Java编译得到.class字节码文件，然后JVM解释执行字节码文件，�
 3. AppClassLoader -(parent)-> ExtClassLoader -(parent 其实这里并不是显示指定的)-> BootstrapClassLoader。
 如果一个ClassLoader未指定parent，则其parent会被JVM内置的BootstrapClassLoader去替代。
 4. loadClass()方法的过程 ———— 双亲委托
+双亲委托的委托方向是自下向上，查找方向是自上向下；
 5. 自定义ClassLoader： 
 - 需求：自定义路径/加密.class文件……
 - 如何定义
 6. Context ClassLoader
+7. 为什么要双亲委派？
+对于任意一个类，都需要由加载它的类加载器和这个类本身来一同确立其在Java虚拟机中的唯一性，每一个类加载器，都拥有一个独立的类名称空间；
+同一个class文件被不同的类加载器加载，那么在虚拟机中也会是不同的类；
+双亲委派保证了当各个类加载器的缓存中都没有需要加载的类时，先让BootStrapClassLoader(引导类加载器)来查找加载，这样做主要保证核心库的加载工作是由引导类加载器统一完成，避免用户自定义类似java.lang.Object的类放在classpath中被先加载而引起程序混乱。
 
 ## 推荐阅读
 [美团技术团队](https://tech.meituan.com/tags/java.html)

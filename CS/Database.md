@@ -42,7 +42,7 @@ drop、truncate(清空表)是DDL，delte是DML。drop和truncate的操作立即�
 2. 索引
 - 聚集索引：数据行的物理存储顺序和列值的逻辑顺序相同，可以理解为是叶子节点存放的是整条数据，所以一个表只能有一个聚集索引，一般是主键。
 - 非聚集索引：数据行的物理存储顺序和列值的逻辑顺序不同，可以理解为叶子节点存放的是指向数据行的物理地址，并且叶子节点中连续的关键字对应的物理地址是不连续的。实际上，通过非聚集索引查到的是索引列的值和对应的主键值 ， 再使用主键的值通过聚集索引查找到需要的数据(回表二次查询)。
-- 覆盖索引(复合索引)：建立两列以上的索引，只查询覆盖索引里的列的数据(最左前缀匹配原则)不需要进行回表二次查询。
+- 覆盖索引(复合索引)：建立两列以上的索引，只查询覆盖索引里的列的数据(最左前缀匹配原则)时不需要进行回表二次查询。
 	```sql
 	create index index_birthday_and_user_name on user_info(birthday, user_name);
 	select user_name from user_info where birthday = '1991-11-1'
@@ -52,7 +52,33 @@ drop、truncate(清空表)是DDL，delte是DML。drop和truncate的操作立即�
 参考：[聚集索引与非聚集索引的总结](https://www.cnblogs.com/s-b-b/p/8334593.html)  
 [为什么不建议用select *](https://blog.csdn.net/u013240038/article/details/90731874)
 [聚集索引,非聚集索引,覆盖索引 原理](https://blog.csdn.net/itguangit/article/details/82145322)
+
+### Mysql基本架构
+[一条SQL语句在MySQL中执行过程全解析](https://blog.csdn.net/weter_drop/article/details/93386581)  
+mysql分两层：server层和存储引擎层
+	- server层：连接器、查询缓存、分析器、优化器、执行器，所有跨存储引擎的功能都在这一层实现，比如存储过程、触发器、视图，函数等，还有binlog通用日志模块。
+	- 存储引擎层：主要负责数据的存储和读取，采用可以替换的插件式架构，支持 InnoDB、MyISAM、Memory等，其中InnoDB带有redo log。
+sql语句执行过程：
+	- 查询语句：权限校验—》查询缓存—》分析器—》优化器—》权限校验—》执行器—》引擎
+	- 更新语句：分析器----》权限校验----》执行器—》查询(得到数据页)-》 内存中更新 -》 redo log prepare—》binlog—》redo log commit
 	
+### binlog | redo log | undo log
+参考[MySQL日志系统](https://blog.csdn.net/u010002184/article/details/88526708)  
+从内容上讲：
+- binlog 是逻辑日志，以二进制形式记录每条语句的原始逻辑，追加写；
+- redo log 是InnoDB独有的，文件固定大小、循环写，记录的是数据修改之后的值，内存中对数据页修改->redo log prepare状态->修改bin log->redo log commit状态；
+- undo log 是回滚日志(上面的redo是前滚)，是逻辑日志，针对每行进行记录，
+从作用上讲：
+- binlog 主要用于主从复制搭建等、数据库基于时间点的还原(恢复)等；
+- redo log 主要用于应对意外断电的情景(crash-safe)，确保事务的持久性；
+- undo log 提供事务回滚，以及多版本并发控制下的读；
+
+### mysql四种隔离级别
+- 读未提交
+	- 读操作：读不加锁
+	- 写操作：写加行共享锁
+	事务A(只读)先开始，事务B写x行，事务A
+
 ## NoSQL
 ### Redis
 
